@@ -13,22 +13,21 @@ const ManageUsers = () => {
     const queryClient = useQueryClient();
     const { dbUser, isRoleLoading } = useUserRole();
 
-    // 1. Role Check
+
     if (isRoleLoading) return <LoadingSpinner />;
     if (dbUser?.role !== 'admin') {
         return <div className="p-10 text-center text-red-600 font-bold">Access Denied: Admin only.</div>;
     }
 
-    // 2. Fetch Users
+
     const { data: users = [], isLoading } = useQuery({
         queryKey: ['allUsers'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/users'); // No role param to get everyone
-            return res.data;
+            const res = await axiosSecure.get('/users'); 
         }
     });
 
-    // 3. Mutation to update user role
+
     const updateRoleMutation = useMutation({
         mutationFn: ({ userId, newRole }) => {
             return axiosSecure.patch(`/users/role/${userId}`, { role: newRole });
