@@ -17,11 +17,10 @@ const ManageClubs = () => {
         return <div className="p-10 text-center text-error">Access Denied: Admin role required.</div>;
     }
     
-    // 1. Fetch all clubs (Admin gets all, regardless of status)
+
     const { data: clubs = [], isLoading: isClubsLoading } = useQuery({
         queryKey: ['adminAllClubs'],
-        // NOTE: This assumes a secure /admin/clubs route is implemented 
-        // that fetches ALL clubs (pending, approved, rejected).
+  
         queryFn: async () => {
             const res = await axiosSecure.get('/clubs?adminView=true'); 
             return res.data;
@@ -29,18 +28,17 @@ const ManageClubs = () => {
         staleTime: 1000 * 60,
     });
 
-    // 2. Mutation for changing club status (Approve/Reject)
+
     const changeStatusMutation = useMutation({
         mutationFn: ({ clubId, newStatus }) => {
-            // NOTE: This assumes a secure PATCH /clubs/:id route is implemented 
-            // and verifies the Admin role.
+            
             return axiosSecure.patch(`/clubs/${clubId}`, { status: newStatus });
         },
         onSuccess: (data) => {
             const clubName = data.data.clubName;
             const newStatus = data.data.status;
             toast.success(`${clubName} status updated to ${newStatus}.`);
-            queryClient.invalidateQueries(['adminAllClubs', 'featuredClubs']); // Refetch lists
+            queryClient.invalidateQueries(['adminAllClubs', 'featuredClubs']); 
         },
         onError: () => {
             toast.error("Failed to update club status.");
