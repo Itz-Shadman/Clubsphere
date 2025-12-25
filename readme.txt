@@ -19,7 +19,7 @@ chowdhuryshadman707@gmail.com
 Admin Password:
 shadman1122
 
-🛠️ Technology Stack
+🛠️  Technology Stack
 Frontend
 
 React 18
