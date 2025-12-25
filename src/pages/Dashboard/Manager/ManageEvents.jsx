@@ -9,11 +9,11 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
-// Helper function to format date for input[type="datetime-local"]
+
 const formatDateTimeForInput = (isoString) => {
     if (!isoString) return '';
     const date = new Date(isoString);
-    // Format: YYYY-MM-DDTHH:MM
+
     const yyyy = date.getFullYear();
     const mm = String(date.getMonth() + 1).padStart(2, '0');
     const dd = String(date.getDate()).padStart(2, '0');
@@ -28,7 +28,7 @@ const EventFormModal = ({ eventToEdit, onClose }) => {
     const { register, handleSubmit, formState: { errors }, reset, watch } = useForm({
         defaultValues: {
             ...eventToEdit,
-            // Format existing eventDate for the input field
+ 
             eventDate: eventToEdit ? formatDateTimeForInput(eventToEdit.eventDate) : '',
             isPaid: eventToEdit ? eventToEdit.eventFee > 0 : false,
         }
@@ -38,13 +38,13 @@ const EventFormModal = ({ eventToEdit, onClose }) => {
     const isPaid = watch('isPaid');
     const { dbUser } = useUserRole();
 
-    // Fetch the list of clubs managed by the user for the dropdown
+
     const { data: managerClubs = [], isLoading: isClubsLoading } = useQuery({
         queryKey: ['managerClubsList', dbUser?.email],
         queryFn: async () => {
-            // NOTE: Assumes a route to fetch clubs managed by this user's email
+           
             const res = await axiosSecure.get(`/manager/clubs/${dbUser.email}`); 
-            return res.data.filter(club => club.status === 'approved'); // Only allow events for approved clubs
+            return res.data.filter(club => club.status === 'approved'); for approved clubs
         },
         enabled: !!dbUser?.email,
     });
@@ -52,22 +52,22 @@ const EventFormModal = ({ eventToEdit, onClose }) => {
 
     const eventMutation = useMutation({
         mutationFn: (data) => {
-            // Ensure fee is numeric and boolean status reflects fee
+         
             data.eventFee = data.isPaid ? parseFloat(data.eventFee) || 0 : 0;
             data.isPaid = data.eventFee > 0;
             
             if (isEditMode) {
-                // PATCH /events/:id (Update existing event)
+         
                 return axiosSecure.patch(`/events/${eventToEdit._id}`, data);
             } else {
-                // POST /events (Create new event)
+                
                 return axiosSecure.post('/events', data);
             }
         },
         onSuccess: () => {
             toast.success(isEditMode ? "Event updated successfully!" : "Event created successfully!");
-            queryClient.invalidateQueries(['managerMyEvents']); // Refetch the manager's list
-            queryClient.invalidateQueries(['events']); // Invalidate public event list
+            queryClient.invalidateQueries(['managerMyEvents']); 
+            queryClient.invalidateQueries(['events']); 
             onClose();
             reset();
         },
@@ -100,7 +100,7 @@ const EventFormModal = ({ eventToEdit, onClose }) => {
                 <div className="form-control">
                     <label className="label">Club*</label>
                     <select className="select select-bordered" 
-                        disabled={isEditMode} // Prevent changing club ID after creation
+                        disabled={isEditMode} 
                         {...register("clubId", { required: "Club selection is required" })}>
                         <option value="">Select Managed Club</option>
                         {managerClubs.map(club => (
@@ -182,11 +182,11 @@ const ManageEvents = () => {
         return <div className="p-10 text-center text-error">Access Denied: Club Manager role required.</div>;
     }
 
-    // 1. Fetch events managed by this user (joined with club details)
+
     const { data: myEvents = [], isLoading: isMyEventsLoading } = useQuery({
         queryKey: ['managerMyEvents', dbUser?.email],
         queryFn: async () => {
-            // NOTE: Assumes a secure route /manager/events/:email is implemented
+            
             const res = await axiosSecure.get(`/manager/events/${dbUser.email}`); 
             return res.data;
         },
@@ -194,16 +194,16 @@ const ManageEvents = () => {
         staleTime: 1000 * 30,
     });
 
-    // 2. Mutation for deleting an event
+  
     const deleteEventMutation = useMutation({
         mutationFn: (eventId) => {
-            // NOTE: This assumes a secure DELETE /events/:id route is implemented.
+            
             return axiosSecure.delete(`/events/${eventId}`);
         },
         onSuccess: () => {
             toast.success("Event deleted successfully.");
             queryClient.invalidateQueries(['managerMyEvents']);
-            queryClient.invalidateQueries(['events']); // Invalidate public event list
+            queryClient.invalidateQueries(['events']); 
         },
         onError: () => {
             toast.error("Failed to delete event.");
@@ -306,7 +306,7 @@ const ManageEvents = () => {
                 )}
             </div>
             
-            {/* Modal for Create/Edit */}
+        
             <input type="checkbox" id="event_form_modal" className="modal-toggle" checked={isModalOpen} onChange={() => {}} />
             <div className={`modal ${isModalOpen ? 'modal-open' : ''}`} role="dialog">
                 <EventFormModal eventToEdit={editEvent} onClose={closeModal} />

@@ -11,7 +11,7 @@ const AddEvent = () => {
     const { dbUser } = useUserRole();
     const isPaid = watch("isPaid");
 
-    // Fetch only the manager's approved clubs to link the event
+
     const { data: myClubs = [], isLoading } = useQuery({
         queryKey: ['myApprovedClubs', dbUser?.email],
         queryFn: async () => {
