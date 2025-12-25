@@ -11,22 +11,21 @@ const ManagerOverview = () => {
     const navigate = useNavigate();
     const { dbUser, isRoleLoading } = useUserRole();
 
-    // Fetch Summary Data
+    
     const { data: managerSummary, isLoading: isSummaryLoading, isFetching } = useQuery({
-        // Include email in key so it refetches when user changes
+
         queryKey: ['managerSummary', dbUser?.email], 
         queryFn: async () => {
             const res = await axiosSecure.get(`/manager/summary/${dbUser.email}`); 
             return res.data;
         },
-        // IMPORTANT: Only run if we actually have the email
+   
         enabled: !!dbUser?.email && dbUser?.role === 'manager', 
     });
 
-    // Show spinner if loading role or summary data
+
     if (isRoleLoading || isSummaryLoading) return <LoadingSpinner />;
 
-    // fallback values to 0 if data isn't ready
     const { 
         clubsManaged = 0, 
         totalMembers = 0, 
@@ -52,7 +51,7 @@ const ManagerOverview = () => {
                 {isFetching && <span className="loading loading-dots loading-sm text-blue-600"></span>}
             </div>
             
-            {/* Stats Grid */}
+         
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, index) => (
                     <div key={index} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between transition-all hover:shadow-md">
@@ -65,7 +64,7 @@ const ManagerOverview = () => {
                 ))}
             </div>
 
-            {/* Quick Actions Panel */}
+           
             <div className="mt-12 bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
                 <h3 className="text-2xl font-bold text-gray-800 mb-2">Management Controls</h3>
                 <p className="text-gray-500 mb-8">Direct access to your club operations and event planning.</p>
