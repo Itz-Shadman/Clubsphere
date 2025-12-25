@@ -28,7 +28,6 @@ const ClubDetails = () => {
         }
 
         if (club.membershipFee > 0) {
-            // REDIRECT TO PAYMENT
             navigate('/dashboard/payment', { 
                 state: { 
                     price: club.membershipFee, 
@@ -38,7 +37,6 @@ const ClubDetails = () => {
                 } 
             });
         } else {
-            // Handle free join logic here via axiosSecure.post('/memberships', ...)
             Swal.fire("Success", "You joined this free club!", "success");
         }
     };
