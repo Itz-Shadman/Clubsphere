@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useAuth } from "../../providers/AuthProvider";
 import { Helmet } from "react-helmet-async";
-import { mockUsers } from "../../data/mockUsers"; // Ensure this path is correct
+import { mockUsers } from "../../data/mockUsers";
 import { FaEnvelope, FaLock, FaUserShield, FaSignInAlt } from "react-icons/fa";
 
 export default function Login() {
@@ -20,20 +20,20 @@ export default function Login() {
         setEmail(selectedUser.email);
         setPassword(selectedUser.password);
         setRole(selectedUser.role);
-        setError(""); // Clear any existing errors
+        setError(""); 
     };
 
-    // --- LOGIN HANDLER ---
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
         setLoading(true);
 
         try {
-            // This calls the signIn in AuthProvider which checks mockUsers.js first
+          
             await signIn(email, password);
             
-            // Redirect based on the UI selected role
+         
             if (role === "admin") {
                 navigate("/dashboard/admin-overview");
             } else if (role === "clubManager") {
@@ -66,7 +66,7 @@ export default function Login() {
                 )}
 
                 <form onSubmit={handleLogin} className="space-y-5">
-                    {/* Role Selector */}
+                  
                     <div>
                         <label className="flex items-center gap-2 text-xs font-bold uppercase text-gray-400 mb-2 ml-1">
                             <FaUserShield /> Login Role
@@ -82,7 +82,7 @@ export default function Login() {
                         </select>
                     </div>
 
-                    {/* Email Field */}
+              
                     <div>
                         <label className="flex items-center gap-2 text-xs font-bold uppercase text-gray-400 mb-2 ml-1">
                             <FaEnvelope /> Email Address
@@ -97,7 +97,7 @@ export default function Login() {
                         />
                     </div>
 
-                    {/* Password Field */}
+            
                     <div>
                         <label className="flex items-center gap-2 text-xs font-bold uppercase text-gray-400 mb-2 ml-1">
                             <FaLock /> Password
@@ -121,7 +121,7 @@ export default function Login() {
                     </button>
                 </form>
 
-                {/* --- QUICK DEMO LOGIN BUTTONS --- */}
+          
                 <div className="mt-10 pt-6 border-t border-gray-100">
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] text-center mb-5">
                         Development Quick Access
