@@ -22,16 +22,16 @@ const ClubFormModal = ({ clubToEdit, onClose, refetchClubs }) => {
     const clubMutation = useMutation({
         mutationFn: (data) => {
             if (isEditMode) {
-                // PATCH /clubs/:id (Update existing club)
+            
                 return axiosSecure.patch(`/clubs/${clubToEdit._id}`, data);
             } else {
-                // POST /clubs (Create new club)
+           
                 return axiosSecure.post('/clubs', data);
             }
         },
         onSuccess: () => {
             toast.success(isEditMode ? "Club updated successfully!" : "Club created successfully! Awaiting Admin approval.");
-            queryClient.invalidateQueries(['managerMyClubs']); // Refetch the list
+            queryClient.invalidateQueries(['managerMyClubs']);
             onClose();
             reset();
         },
@@ -42,17 +42,14 @@ const ClubFormModal = ({ clubToEdit, onClose, refetchClubs }) => {
     });
 
     const onSubmit = (data) => {
-        // Ensure membershipFee is a number
+  
         data.membershipFee = parseFloat(data.membershipFee) || 0;
         
-        // Ensure status is correctly set on creation
+
         if (!isEditMode) {
             data.status = 'pending'; 
         }
 
-        // The managerEmail will be injected on the backend from the token (secure method) 
-        // or taken from the auth context (less secure, used here for simplicity):
-        // data.managerEmail = user.email; // Assuming you pass user from useAuth to this component
 
         clubMutation.mutate(data);
     };
@@ -137,12 +134,11 @@ const MyClubs = () => {
         return <div className="p-10 text-center text-error">Access Denied: Club Manager role required.</div>;
     }
 
-    // 1. Fetch clubs managed by this user
+
     const { data: myClubs = [], isLoading: isMyClubsLoading, refetch: refetchMyClubs } = useQuery({
         queryKey: ['managerMyClubs', dbUser?.email],
         queryFn: async () => {
-            // NOTE: This assumes a secure route /manager/clubs/:email is implemented
-            // that filters clubs by managerEmail and is protected by verifyManager role.
+       
             const res = await axiosSecure.get(`/manager/clubs/${dbUser.email}`); 
             return res.data;
         },
@@ -150,10 +146,9 @@ const MyClubs = () => {
         staleTime: 1000 * 30,
     });
 
-    // 2. Mutation for deleting a club
+
     const deleteClubMutation = useMutation({
         mutationFn: (clubId) => {
-            // NOTE: This assumes a secure DELETE /clubs/:id route is implemented.
             return axiosSecure.delete(`/clubs/${clubId}`);
         },
         onSuccess: () => {
