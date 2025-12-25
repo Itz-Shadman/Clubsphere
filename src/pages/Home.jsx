@@ -1,12 +1,12 @@
 // src/pages/Home.jsx
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Link } from "react-router"; // FIX: Use 'react-router-dom'
+import { Link } from "react-router"; 
 import useFeaturedClubs from "../hooks/useFeaturedClubs";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { FaUsers, FaCalendarAlt, FaStar } from 'react-icons/fa';
 
-// --- Framer Motion Variants ---
+
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -31,7 +31,7 @@ const HeroSection = () => (
         animate="visible"
     >
         <div className="hero-content flex-col lg:flex-row-reverse max-w-7xl mx-auto py-12">
-            {/* Hero Image / Illustration */}
+
             <motion.div 
                 className="lg:w-1/2"
                 initial={{ x: 100, opacity: 0 }}
@@ -40,14 +40,13 @@ const HeroSection = () => (
             >
                 
                 <img 
-                    // ACTION REQUIRED: REPLACE THIS BROKEN URL WITH A WORKING IMAGE PATH
                     src="[REPLACE WITH WORKING HERO IMAGE URL/PATH]" 
                     className="w-full max-w-lg rounded-lg shadow-2xl" 
                     alt="ClubSphere Community"
                 />
             </motion.div>
             
-            {/* Hero Content */}
+       
             <motion.div 
                 className="lg:w-1/2 text-center lg:text-left"
                 variants={containerVariants}
@@ -78,7 +77,7 @@ const HeroSection = () => (
 );
 
 const ClubCard = ({ club, index }) => {
-    // Animate cards appearing with a delay based on index
+
     return (
         <motion.div
             className="card w-full bg-base-100 shadow-xl image-full group cursor-pointer hover:shadow-2xl transition-shadow"

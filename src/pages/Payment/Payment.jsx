@@ -4,14 +4,14 @@ import { useLocation, Navigate } from "react-router";
 import CheckoutForm from "./CheckoutForm";
 import { Helmet } from "react-helmet-async";
 
-// FIX: Ensure the key is read correctly from Vite env
+
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK || "");
 
 const Payment = () => {
     const location = useLocation();
     const data = location.state;
 
-    // Prevention: If someone reloads the page, the state is lost
+
     if (!data || !data.price) return <Navigate to="/dashboard/member-overview" />;
 
     return (

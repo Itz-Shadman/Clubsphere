@@ -11,7 +11,7 @@ import {
 import { auth, googleProvider } from '../firebase.config'; 
 import useAxiosPublic from '../hooks/useAxiosPublic';
 import useAxiosSecure from '../hooks/useAxiosSecure';
-import { mockUsers } from '../data/mockUsers'; // Import your mock data
+import { mockUsers } from '../data/mockUsers';
 
 export const AuthContext = createContext(null);
 
@@ -27,11 +27,11 @@ const AuthProvider = ({ children }) => {
         return createUserWithEmailAndPassword(auth, email, password);
     };
 
-    // --- MODIFIED SIGN IN ---
+   
     const signIn = async (email, password) => {
         setLoading(true);
 
-        // 1. Check if the user exists in our local JSON (Development Bypass)
+       
         const localUser = mockUsers.find(
             (u) => u.email === email && u.password === password
         );
@@ -42,15 +42,15 @@ const AuthProvider = ({ children }) => {
                 email: localUser.email,
                 displayName: localUser.name,
                 photoURL: localUser.image,
-                isMock: true // Helps us identify this session
+                isMock: true
             };
             setUser(mockSession);
-            setDbUser(localUser); // Set the role (admin/manager) directly from JSON
+            setDbUser(localUser);
             setLoading(false);
             return Promise.resolve({ user: mockSession });
         }
 
-        // 2. If not found in JSON, proceed to real Firebase login
+       
         return signInWithEmailAndPassword(auth, email, password);
     };
 
@@ -92,7 +92,7 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async currentUser => {
-            // If we are in a mock session, don't let Firebase overwrite it with 'null'
+           
             if (user?.isMock) {
                 setLoading(false);
                 return;
@@ -117,7 +117,7 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
         });
         return () => unsubscribe();
-    }, [axiosPublic, user?.isMock]); // Added user?.isMock to dependency array
+    }, [axiosPublic, user?.isMock]);
 
     const authInfo = {
         user,
