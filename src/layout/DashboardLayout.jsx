@@ -8,7 +8,7 @@ const DashboardLayout = () => {
     const { user, dbUser, logOut } = useAuth();
     const navigate = useNavigate();
 
-    // Ensure we handle 'clubManager' vs 'manager' strings from your DB
+   
     const userRole = dbUser?.role?.toLowerCase();
 
     const handleLogout = () => {
@@ -24,7 +24,7 @@ const DashboardLayout = () => {
     };
 
     const getNavLinks = (role) => {
-        // Checking for 'clubmanager' specifically as it is common in your DB
+        
         if (role === 'admin') {
             return (
                 <>
