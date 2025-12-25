@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 
 const MemberOverview = () => {
     const axiosSecure = useAxiosSecure();
-    const { user } = useAuth(); // Using Firebase user directly for the email
+    const { user } = useAuth();
 
     const { data: summary = {}, isLoading } = useQuery({
         queryKey: ['memberSummary', user?.email],

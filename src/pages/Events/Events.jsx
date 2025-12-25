@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useQuery } from '@tanstack/react-query';
 import useAxiosCommon from "../../hooks/useAxiosCommon";
 import LoadingSpinner from "../../components/LoadingSpinner";
-// FIX: Changed import source to 'react-router-dom'
+
 import { Link, useSearchParams } from "react-router"; 
 import { useState } from "react";
 import { FaCalendarDay, FaFilter, FaSearch, FaSort } from "react-icons/fa";
@@ -27,7 +27,7 @@ const EventCard = ({ event }) => (
             
             <p className="text-gray-500 line-clamp-3 mt-2">{event.description}</p>
             
-            {/* Club Details from Aggregation */}
+  
             <div className="mt-4 text-sm">
                 <p className="font-bold">Club: <span className="text-clubsphere-accent">{event.clubName}</span></p>
                 <p className="text-xs text-gray-400">Location: {event.location}</p>
@@ -46,15 +46,15 @@ const Events = () => {
     const axiosCommon = useAxiosCommon();
     const [searchParams, setSearchParams] = useSearchParams();
     
-    // Get query state from URL
+
     const search = searchParams.get('search') || '';
     const category = searchParams.get('category') || 'All';
     const sortField = searchParams.get('sortField') || 'eventDate';
-    const sortOrder = searchParams.get('sortOrder') || 'asc'; // Default: soonest first
+    const sortOrder = searchParams.get('sortOrder') || 'asc'; 
     
     const [searchInput, setSearchInput] = useState(search);
 
-    // TanStack Query for data fetching
+
     const { data: events = [], isLoading, error } = useQuery({
         queryKey: ['events', search, category, sortField, sortOrder],
         queryFn: async () => {
@@ -80,7 +80,7 @@ const Events = () => {
     const handleFilterChange = (field, value) => {
         const newParams = new URLSearchParams(searchParams);
         newParams.set(field, value);
-        // Ensure default sort is applied if only one sort param is changed
+
         if (field === 'sortField' && !newParams.get('sortOrder')) newParams.set('sortOrder', 'asc');
         if (field === 'sortOrder' && !newParams.get('sortField')) newParams.set('sortField', 'eventDate');
         
@@ -98,11 +98,11 @@ const Events = () => {
                 Upcoming Club Events
             </h1>
 
-            {/* --- Search, Filter, Sort Controls --- */}
+         
             <div className="bg-white p-6 rounded-lg shadow-lg mb-8 border border-gray-200">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     
-                    {/* Search */}
+                    
                     <form onSubmit={handleSearch} className="md:col-span-1">
                         <label className="label font-semibold">Search by Event Title</label>
                         <div className="join w-full">
@@ -119,7 +119,7 @@ const Events = () => {
                         </div>
                     </form>
 
-                    {/* Filter */}
+                    
                     <div className="md:col-span-1">
                         <label className="label font-semibold flex items-center gap-2"><FaFilter /> Filter by Club Category</label>
                         <select 
@@ -134,7 +134,7 @@ const Events = () => {
                         </select>
                     </div>
 
-                    {/* Sorting */}
+               
                     <div className="md:col-span-1">
                         <label className="label font-semibold flex items-center gap-2"><FaSort /> Sort By</label>
                         <div className="flex gap-2">
@@ -159,7 +159,7 @@ const Events = () => {
                 </div>
             </div>
 
-            {/* --- Events List --- */}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {events.length > 0 ? (
                     events.map(event => <EventCard key={event._id} event={event} />)
