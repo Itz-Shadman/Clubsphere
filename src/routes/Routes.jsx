@@ -20,8 +20,6 @@ import EventDetails from "../pages/EventDetails";
 import AdminOverview from "../pages/Dashboard/Admin/AdminOverview";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import ManagePayments from "../pages/Dashboard/Admin/ManagePayments";
-
-// New Imports for Manager Actions
 import ClubMembers from "../pages/Dashboard/Manager/ClubMembers";
 import EventRegistrations from "../pages/Dashboard/Manager/EventRegistrations";
 import AddEvent from "../pages/Dashboard/Manager/AddEvent";
